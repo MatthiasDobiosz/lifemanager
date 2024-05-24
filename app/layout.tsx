@@ -1,4 +1,4 @@
-import { GeistSans } from "geist/font/sans";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const defaultUrl = "http://localhost:3000";
@@ -15,11 +15,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
+    <html lang="en">
+      <head />
       <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="min-h-screen flex flex-col items-center">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
