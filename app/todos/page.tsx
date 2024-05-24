@@ -1,8 +1,27 @@
+import { TodoList } from "@/components/todolist/TodoList";
+import { Tables } from "@/types/supabase";
+
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const supabase = createClient();
-  const { data: todos } = await supabase.from("todos").select();
+  const { data: todos } = await supabase
+    .from("todos")
+    .select()
+    .returns<Tables<"Todos">[]>();
 
-  return <pre>{JSON.stringify(todos, null, 2)}</pre>;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
+
+  return (
+    <div className="mt-[5em]">
+      <TodoList todos={todos} />
+    </div>
+  );
 }

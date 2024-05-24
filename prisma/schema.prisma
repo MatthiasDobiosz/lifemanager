@@ -13,7 +13,13 @@ datasource db {
   url      = env("DATABASE_URL") 
 }
 
+enum TodoStatus {
+  OPEN
+  CLOSED
+}
+
 model Todos {
   id    Int     @id @default(autoincrement())
-  name  String?
+  name  String
+  status TodoStatus
 }

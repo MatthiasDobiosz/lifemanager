@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Navbar } from "@/components/Navbar";
 
 const defaultUrl = "http://localhost:3000";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen flex flex-col items-center">
+            <Navbar />
             {children}
           </main>
         </ThemeProvider>
