@@ -9,54 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      _prisma_migrations: {
+      todos: {
         Row: {
-          applied_steps_count: number
-          checksum: string
-          finished_at: string | null
-          id: string
-          logs: string | null
-          migration_name: string
-          rolled_back_at: string | null
-          started_at: string
-        }
-        Insert: {
-          applied_steps_count?: number
-          checksum: string
-          finished_at?: string | null
-          id: string
-          logs?: string | null
-          migration_name: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Update: {
-          applied_steps_count?: number
-          checksum?: string
-          finished_at?: string | null
-          id?: string
-          logs?: string | null
-          migration_name?: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Relationships: []
-      }
-      Todos: {
-        Row: {
+          created_at: string
           id: number
-          name: string
-          status: Database["public"]["Enums"]["TodoStatus"]
+          name: string | null
+          status: Database["public"]["Enums"]["status_enumn"]
         }
         Insert: {
+          created_at?: string
           id?: number
-          name: string
-          status: Database["public"]["Enums"]["TodoStatus"]
+          name?: string | null
+          status?: Database["public"]["Enums"]["status_enumn"]
         }
         Update: {
+          created_at?: string
           id?: number
-          name?: string
-          status?: Database["public"]["Enums"]["TodoStatus"]
+          name?: string | null
+          status?: Database["public"]["Enums"]["status_enumn"]
         }
         Relationships: []
       }
@@ -68,7 +38,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      TodoStatus: "OPEN" | "CLOSED"
+      status_enum: "opened" | "closed"
+      status_enumn: "open" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never

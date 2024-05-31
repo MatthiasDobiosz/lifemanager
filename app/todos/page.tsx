@@ -1,15 +1,10 @@
 import { TodoList } from "@/components/todolist/TodoList";
-import { Tables } from "@/types/supabase";
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
   const supabase = createClient();
-  const { data: todos } = await supabase
-    .from("todos")
-    .select()
-    .returns<Tables<"Todos">[]>();
 
   const {
     data: { user },
@@ -18,6 +13,10 @@ export default async function Page() {
   if (!user) {
     return redirect("/login");
   }
+
+  const { data: todos } = await supabase.from("todos").select();
+
+  console.log(todos);
 
   return (
     <div className="mt-[5em]">

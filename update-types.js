@@ -1,6 +1,6 @@
 // update-types.js
 const { exec } = require("child_process");
-require("dotenv").config();
+require("dotenv").config({ path: ".env.local" });
 
 const projectRef = process.env.DATABASE_PROJECT_ID;
 
