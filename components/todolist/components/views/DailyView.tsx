@@ -1,3 +1,5 @@
+"use client";
+
 import { Tables } from "@/types/supabase";
 import { TodoItemList } from "../TodoItemList";
 

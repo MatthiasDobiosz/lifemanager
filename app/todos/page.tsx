@@ -14,13 +14,9 @@ export default async function Page() {
     return redirect("/login");
   }
 
-  const { data: todos } = await supabase.from("todos").select();
-
-  console.log(todos);
-
   return (
     <div className="mt-[5em]">
-      <TodoList todos={todos} />
+      <TodoList />
     </div>
   );
 }

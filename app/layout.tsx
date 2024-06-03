@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { TodosStoreProvider } from "@/providers/todos-store-provider";
 
 const defaultUrl = "http://localhost:3000";
 
@@ -19,17 +20,19 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="min-h-screen flex flex-col items-center">
-            <Navbar />
-            {children}
-          </main>
-        </ThemeProvider>
+        <TodosStoreProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main className="min-h-screen flex flex-col items-center">
+              <Navbar />
+              {children}
+            </main>
+          </ThemeProvider>
+        </TodosStoreProvider>
       </body>
     </html>
   );

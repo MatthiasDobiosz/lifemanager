@@ -13,9 +13,15 @@ export default async function Index() {
     return redirect("/login");
   }
 
+  const { data: todos, error } = await supabase.from("todos").select();
+
+  if (error) {
+    return <div> Error </div>;
+  }
+
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center mt-[5em]">
-      <Dashboard />
+      <Dashboard todos={todos} />
     </div>
   );
 }

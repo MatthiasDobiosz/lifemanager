@@ -2,28 +2,23 @@
 
 import { useState } from "react";
 import { Switcher } from "../Switcher";
-import { Tables } from "@/types/supabase";
 import { DailyView } from "./components/views/DailyView";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet";
 import { AddTodoForm } from "../forms/addTodo/AddTodoForm";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { useTodosStore } from "@/providers/todos-store-provider";
 
-interface TodoListProps {
-  todos: Tables<"todos">[] | null;
-}
-
-function TodoList(props: TodoListProps): JSX.Element {
-  const { todos } = props;
-
+function TodoList(): JSX.Element {
   const [dailyView, setDailyView] = useState(true);
+  const todos = useTodosStore((state) => state.todos);
 
   return (
     <div className="flex flex-col">
@@ -36,21 +31,21 @@ function TodoList(props: TodoListProps): JSX.Element {
             onSwitch={setDailyView}
           />
         </div>
-        <Sheet>
-          <SheetTrigger asChild>
+        <Dialog>
+          <DialogTrigger asChild>
             <Button className="rounded-none ml-auto ">
               <span className="pr-2">Add Todo</span>
               <Plus />
             </Button>
-          </SheetTrigger>
-          <SheetContent className="w-[400px] sm:w-[540px]">
-            <SheetHeader>
-              <SheetTitle>Add Todo</SheetTitle>
-              <SheetDescription>Add a todo to your list</SheetDescription>
+          </DialogTrigger>
+          <DialogContent className="w-[400px] sm:w-[540px]">
+            <DialogHeader>
+              <DialogTitle>Add Todo</DialogTitle>
+              <DialogDescription>Add a todo to your list</DialogDescription>
               <AddTodoForm />
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
       </div>
       {dailyView ? <DailyView todos={todos} /> : <></>}
     </div>
