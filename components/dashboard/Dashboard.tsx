@@ -4,12 +4,12 @@ import Link from "next/link";
 import { Box } from "../Box";
 import { BoxGroup } from "../BoxGroup";
 import { Button } from "../ui/button";
-import { Tables } from "@/types/supabase";
 import { useTodosStore } from "@/providers/todos-store-provider";
 import { useEffect } from "react";
+import { Todo } from "@/types/customTypes";
 
 interface DashboardProps {
-  todos: Tables<"todos">[];
+  todos: Todo[];
 }
 
 function Dashboard(props: DashboardProps): JSX.Element {

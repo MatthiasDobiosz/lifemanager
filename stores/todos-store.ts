@@ -1,13 +1,14 @@
 import { createStore } from "zustand";
-import { Tables } from "../types/supabase";
+import { Todo } from "@/types/customTypes";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type TodosState = {
-  todos: Tables<"todos">[];
+  todos: Todo[];
 };
 
 type TodosActions = {
-  setTodos: (todos: Tables<"todos">[]) => void;
-  addTodo: (todo: Tables<"todos">) => void;
+  setTodos: (todos: Todo[]) => void;
+  addTodo: (todo: Todo) => void;
   removeTodo: () => void;
 };
 
@@ -18,16 +19,24 @@ const defaultInitState: TodosState = {
 };
 
 const createTodosStore = (initState: TodosState = defaultInitState) => {
-  return createStore<TodosStore>()((set) => ({
-    ...initState,
-    setTodos: (todos) => {
-      set({ todos: todos });
-    },
-    addTodo: (todo) => {
-      set((state) => ({ todos: [...state.todos, todo] }));
-    },
-    removeTodo: () => {},
-  }));
+  return createStore<TodosStore>()(
+    persist(
+      (set) => ({
+        ...initState,
+        setTodos: (todos) => {
+          set({ todos: todos });
+        },
+        addTodo: (todo) => {
+          set((state) => ({ todos: [...state.todos, todo] }));
+        },
+        removeTodo: () => {},
+      }),
+      {
+        name: "todo-storage",
+        storage: createJSONStorage(() => sessionStorage),
+      }
+    )
+  );
 };
 
 export { createTodosStore };

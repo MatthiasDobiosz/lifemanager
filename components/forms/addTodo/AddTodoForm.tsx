@@ -17,23 +17,42 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
 import { SheetClose } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
+import { useTodosStore } from "@/providers/todos-store-provider";
+import { NewTodo } from "@/types/customTypes";
 
 function AddTodoForm(): JSX.Element {
   const supabase: SupabaseClient<Database> = createClient();
+  const addTodoToState = useTodosStore((state) => state.addTodo);
 
   const form = useForm<z.infer<typeof addTodoSchema>>({
     resolver: zodResolver(addTodoSchema),
     defaultValues: {
       name: "",
+      description: "",
     },
   });
 
   async function onSubmit(formData: z.infer<typeof addTodoSchema>) {
-    const { error } = await supabase
+    const newTodo: NewTodo = {
+      name: formData.name,
+      status: "open",
+      description: formData.description,
+    };
+    const { data, error } = await supabase
       .from("todos")
-      .insert({ name: formData.name, status: "open" });
+      .insert(newTodo)
+      .select()
+      .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Error inserting data:", error);
+      return;
+    }
+
+    if (data) {
+      addTodoToState(data);
+    }
   }
 
   return (
@@ -52,9 +71,21 @@ function AddTodoForm(): JSX.Element {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="" className="resize-none" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
         <SheetClose asChild>
-          <Button type="submit" className="mt-4">
+          <Button type="submit" className="mt-4 w-full">
             Create
           </Button>
         </SheetClose>

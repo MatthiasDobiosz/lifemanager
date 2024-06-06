@@ -1,10 +1,10 @@
 "use client";
 
-import { Tables } from "@/types/supabase";
 import { TodoItemList } from "../TodoItemList";
+import { Todo } from "@/types/customTypes";
 
 interface DailyViewProps {
-  todos: Tables<"todos">[] | null;
+  todos: Todo[] | null;
 }
 
 function DailyView(props: DailyViewProps): JSX.Element {
