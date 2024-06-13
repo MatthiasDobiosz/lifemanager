@@ -11,7 +11,6 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
@@ -20,6 +19,13 @@ import { SheetClose } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { useTodosStore } from "@/providers/todos-store-provider";
 import { NewTodo } from "@/types/customTypes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function AddTodoForm(): JSX.Element {
   const supabase: SupabaseClient<Database> = createClient();
@@ -28,17 +34,18 @@ function AddTodoForm(): JSX.Element {
   const form = useForm<z.infer<typeof addTodoSchema>>({
     resolver: zodResolver(addTodoSchema),
     defaultValues: {
-      name: "",
+      type: "daily",
       description: "",
     },
   });
 
   async function onSubmit(formData: z.infer<typeof addTodoSchema>) {
     const newTodo: NewTodo = {
-      name: formData.name,
       status: "open",
+      type: formData.type,
       description: formData.description,
     };
+
     const { data, error } = await supabase
       .from("todos")
       .insert(newTodo)
@@ -61,13 +68,21 @@ function AddTodoForm(): JSX.Element {
         <div>
           <FormField
             control={form.control}
-            name="name"
+            name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="" {...field} />
-                </FormControl>
+                <FormLabel>Type</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue="daily">
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="daily">Daily</SelectItem>
+                    <SelectItem value="general">General</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormItem>
             )}
           />

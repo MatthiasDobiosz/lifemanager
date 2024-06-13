@@ -9,7 +9,8 @@ type TodosState = {
 type TodosActions = {
   setTodos: (todos: Todo[]) => void;
   addTodo: (todo: Todo) => void;
-  removeTodo: () => void;
+  removeTodo: (todo: Todo) => void;
+  toggleStatus: (id: number, status: Todo["status"]) => void;
 };
 
 type TodosStore = TodosState & TodosActions;
@@ -29,7 +30,18 @@ const createTodosStore = (initState: TodosState = defaultInitState) => {
         addTodo: (todo) => {
           set((state) => ({ todos: [...state.todos, todo] }));
         },
-        removeTodo: () => {},
+        removeTodo: (todo) => {
+          set((state) => ({
+            todos: [...state.todos.filter((td) => td.id !== todo.id)],
+          }));
+        },
+        toggleStatus: (id, status) => {
+          set((state) => ({
+            todos: state.todos.map((todo) =>
+              todo.id === id ? { ...todo, status } : todo
+            ),
+          }));
+        },
       }),
       {
         name: "todo-storage",
