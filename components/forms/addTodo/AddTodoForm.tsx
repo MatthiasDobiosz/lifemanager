@@ -30,6 +30,8 @@ import {
 function AddTodoForm(): JSX.Element {
   const supabase: SupabaseClient<Database> = createClient();
   const addTodoToState = useTodosStore((state) => state.addTodo);
+  const selectedDate = useTodosStore((state) => state.selectedDate);
+  const userId = useTodosStore((state) => state.userId);
 
   const form = useForm<z.infer<typeof addTodoSchema>>({
     resolver: zodResolver(addTodoSchema),
@@ -44,11 +46,12 @@ function AddTodoForm(): JSX.Element {
       status: "open",
       type: formData.type,
       description: formData.description,
+      date: new Date(selectedDate).toISOString(),
     };
 
     const { data, error } = await supabase
       .from("todos")
-      .insert(newTodo)
+      .insert({...newTodo, user_id: userId})
       .select()
       .single();
 

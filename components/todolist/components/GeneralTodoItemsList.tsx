@@ -16,9 +16,9 @@ function GeneralTodoItemsList(props: GeneralTodoItemsListProps): JSX.Element {
   const generalTodos = todos?.filter((todo) => todo.type === "general");
 
   return (
-    <div>
+    <div className="flex flex-col justify-center">
+    <p className="text-2xl font-bold mb-2 self-center">General Todos</p>
       <TodoItemList
-        title="General Todos"
         todos={generalTodos}
         onDelete={onDelete}
         onToggleStatus={onToggleStatus}

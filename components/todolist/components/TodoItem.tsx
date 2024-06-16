@@ -16,7 +16,7 @@ function TodoItem(props: TodoItemProps): JSX.Element {
   const { todo, onDelete, onToggleStatus } = props;
 
   return (
-    <div className="border-black border-2 w-[30em]">
+    <div className="border-black border-2 w-[30vw]">
       <div className="flex flex-row justify-between">
         <div
           className={`ml-4 self-center ${todo.status === "closed" ? "line-through" : ""}`}

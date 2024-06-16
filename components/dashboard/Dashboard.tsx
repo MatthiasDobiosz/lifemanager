@@ -10,15 +10,18 @@ import { Todo } from "@/types/customTypes";
 
 interface DashboardProps {
   todos: Todo[];
+  userId: string;
 }
 
 function Dashboard(props: DashboardProps): JSX.Element {
-  const { todos } = props;
+  const { todos, userId } = props;
   const setTodos = useTodosStore((state) => state.setTodos);
+  const setUserId = useTodosStore((state) => state.setUserId);
 
   useEffect(() => {
     setTodos(todos);
-  }, [todos, setTodos]);
+    setUserId(userId)
+  }, [todos, setTodos, userId, setUserId]);
 
   return (
     <div className="flex flex-col gap-6">

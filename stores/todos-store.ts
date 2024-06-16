@@ -4,6 +4,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 type TodosState = {
   todos: Todo[];
+  selectedDate: string;
+  userId: string | null;
 };
 
 type TodosActions = {
@@ -11,12 +13,16 @@ type TodosActions = {
   addTodo: (todo: Todo) => void;
   removeTodo: (todo: Todo) => void;
   toggleStatus: (id: number, status: Todo["status"]) => void;
+  setSelectedDate: (newDate: string) => void;
+  setUserId: (newId: string) => void;
 };
 
 type TodosStore = TodosState & TodosActions;
 
 const defaultInitState: TodosState = {
   todos: [],
+  selectedDate: new Date().toString(),
+  userId: null,
 };
 
 const createTodosStore = (initState: TodosState = defaultInitState) => {
@@ -42,6 +48,12 @@ const createTodosStore = (initState: TodosState = defaultInitState) => {
             ),
           }));
         },
+        setSelectedDate: (date) => {
+          set({selectedDate: date})
+        },
+        setUserId: (id) => {
+          set({ userId: id })
+        }
       }),
       {
         name: "todo-storage",

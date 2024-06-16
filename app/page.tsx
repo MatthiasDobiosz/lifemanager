@@ -13,7 +13,7 @@ export default async function Index() {
     return redirect("/login");
   }
 
-  const { data: todos, error } = await supabase.from("todos").select();
+  const { data: todos, error } = await supabase.from("todos").select().eq('user_id', user.id);
 
   if (error) {
     return <div> Error </div>;
@@ -21,7 +21,7 @@ export default async function Index() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center mt-[5em]">
-      <Dashboard todos={todos} />
+      <Dashboard todos={todos} userId={user.id} />
     </div>
   );
 }
