@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 
 import { Todo } from "@/types/customTypes";
-
 import { Check, Trash, X } from "lucide-react";
 
 interface TodoItemProps {
@@ -16,12 +15,20 @@ function TodoItem(props: TodoItemProps): JSX.Element {
   const { todo, onDelete, onToggleStatus } = props;
 
   return (
-    <div className="border-black border-2 w-[30vw]">
+    <div
+      className={` border-2 w-[30vw] ${todo.status === "closed" ? "border-red-500" : "border-green-500"}`}
+    >
       <div className="flex flex-row justify-between">
-        <div
-          className={`ml-4 self-center ${todo.status === "closed" ? "line-through" : ""}`}
-        >
-          {todo.description}
+        <div className="flex flex-col">
+          <div
+            className={`ml-4  ${todo.status === "closed" ? "line-through" : ""}`}
+          >
+            {todo.description}
+          </div>
+          <div className={"ml-4 flex flex-row gap-4"}>
+            {todo.startTime && <div>Start: {todo.startTime?.slice(0, 5)}</div>}
+            {todo.endTime && <div>End: {todo.endTime?.slice(0, 5)}</div>}
+          </div>
         </div>
         <div>
           <Button variant="ghost" size="icon" onClick={() => onDelete(todo)}>

@@ -14,7 +14,9 @@ export type Database = {
           created_at: string
           date: string
           description: string | null
+          endTime: string | null
           id: number
+          startTime: string | null
           status: Database["public"]["Enums"]["status_enumn"]
           type: Database["public"]["Enums"]["todo_type"]
           user_id: string | null
@@ -23,7 +25,9 @@ export type Database = {
           created_at?: string
           date?: string
           description?: string | null
+          endTime?: string | null
           id?: number
+          startTime?: string | null
           status?: Database["public"]["Enums"]["status_enumn"]
           type?: Database["public"]["Enums"]["todo_type"]
           user_id?: string | null
@@ -32,7 +36,9 @@ export type Database = {
           created_at?: string
           date?: string
           description?: string | null
+          endTime?: string | null
           id?: number
+          startTime?: string | null
           status?: Database["public"]["Enums"]["status_enumn"]
           type?: Database["public"]["Enums"]["todo_type"]
           user_id?: string | null

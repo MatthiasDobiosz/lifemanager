@@ -65,10 +65,7 @@ function TodoList(): JSX.Element {
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-13 gap-x-2 justify-center">
-        <div className="col-start-2 flex justify-center">
-          <h1>Date placeholder</h1>
-        </div>
+      <div className="ml-auto">
         <Dialog>
           <DialogTrigger asChild>
             <Button className="rounded-none ml-auto ">

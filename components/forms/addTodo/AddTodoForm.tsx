@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 function AddTodoForm(): JSX.Element {
   const supabase: SupabaseClient<Database> = createClient();
@@ -47,11 +48,13 @@ function AddTodoForm(): JSX.Element {
       type: formData.type,
       description: formData.description,
       date: new Date(selectedDate).toISOString(),
+      startTime: formData.startTime || null,
+      endTime: formData.endTime || null,
     };
 
     const { data, error } = await supabase
       .from("todos")
-      .insert({...newTodo, user_id: userId})
+      .insert({ ...newTodo, user_id: userId })
       .select()
       .single();
 
@@ -101,6 +104,32 @@ function AddTodoForm(): JSX.Element {
               </FormItem>
             )}
           />
+          <div className="flex flex-row gap-6">
+            <FormField
+              control={form.control}
+              name="startTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Start-time</FormLabel>
+                  <FormControl>
+                    <Input type="time" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>End-time</FormLabel>
+                  <FormControl>
+                    <Input type="time" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
         <SheetClose asChild>
           <Button type="submit" className="mt-4 w-full">
