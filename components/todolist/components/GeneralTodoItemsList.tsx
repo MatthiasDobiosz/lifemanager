@@ -16,8 +16,8 @@ function GeneralTodoItemsList(props: GeneralTodoItemsListProps): JSX.Element {
   const generalTodos = todos?.filter((todo) => todo.type === "general");
 
   return (
-    <div className="flex flex-col justify-center">
-    <p className="text-2xl font-bold mb-2 self-center">General Todos</p>
+    <div className="flex flex-col">
+      <p className="text-2xl font-bold mb-2 self-center">General Todos</p>
       <TodoItemList
         todos={generalTodos}
         onDelete={onDelete}

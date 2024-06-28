@@ -83,7 +83,7 @@ function TodoList(): JSX.Element {
         </Dialog>
       </div>
 
-      <div className="flex flex-row gap-[10em] mt-5 ">
+      <div className="flex flex-row gap-[10em]">
         <DailyTodoItemsList
           onDelete={onDeleteTodo}
           onToggleStatus={onToggleStatus}

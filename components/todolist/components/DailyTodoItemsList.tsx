@@ -6,14 +6,19 @@ import { Todo } from "@/types/customTypes";
 import { ArrowLeft, ArrowRight, CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { dateToString } from "@/utils/dateTimeUtils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface DailyTodoItemsListProps {
   onDelete: (todo: Todo) => void;
-  onToggleStatus: (id: number, status: Todo["status"]) => void; 
+  onToggleStatus: (id: number, status: Todo["status"]) => void;
 }
 
 function DailyTodoItemsList(props: DailyTodoItemsListProps): JSX.Element {
@@ -26,11 +31,19 @@ function DailyTodoItemsList(props: DailyTodoItemsListProps): JSX.Element {
   const [currentTodos, setCurrentTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    setCurrentTodos(todos.filter((todo) => todo.type === 'daily').filter((todo) => new Date(todo.date).toDateString() === new Date(selectedDate).toDateString()));
-  }, [selectedDate, todos])
+    setCurrentTodos(
+      todos
+        .filter((todo) => todo.type === "daily")
+        .filter(
+          (todo) =>
+            new Date(todo.date).toDateString() ===
+            new Date(selectedDate).toDateString()
+        )
+    );
+  }, [selectedDate, todos]);
 
   function setNewDate(date: Date | undefined): void {
-    if(date){
+    if (date) {
       setSelectedDate(date.toString());
     }
   }
@@ -41,44 +54,61 @@ function DailyTodoItemsList(props: DailyTodoItemsListProps): JSX.Element {
     nextDay.setDate(currentDay.getDate() + 1);
     setSelectedDate(nextDay.toString());
   }
-  
+
   function setDateToPreviousDay() {
     const currentDay = new Date(selectedDate);
     const previousDay = new Date(selectedDate);
-    previousDay.setDate(currentDay.getDate() -1);
+    previousDay.setDate(currentDay.getDate() - 1);
     setSelectedDate(previousDay.toString());
   }
-  
+
   return (
-    <div className="flex flex-col justify-center">
-      <div className="flex flex-row justify-between gap-4">
-      <Button size="icon" onClick={() => setDateToPreviousDay()}><ArrowLeft className="h-4 w-4"/></Button>
-        <p className="text-2xl font-bold mb-2 self-center">Daily Todos</p>
-        <div className="flex flex-row gap-2">
-          <div className="self-center font-bold">{selectedDate && dateToString(selectedDate)}</div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button size="icon"><CalendarIcon className="h-4 w-4"/></Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-            <PopoverClose>
-              <Calendar
-                mode="single"
-                selected={new Date(selectedDate)}
-                onSelect={(day) => setNewDate(day)}
-                initialFocus
-              />
-            </PopoverClose>
-            </PopoverContent>
-          </Popover>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
+        <div className="flex flex-row justify-between">
+          <Button size="icon" onClick={() => setDateToPreviousDay()}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <p className="text-2xl font-bold mb-2 self-center">Daily Todos</p>
+          <div className="flex flex-row gap-2">
+            <div className="self-center font-bold">
+              {selectedDate && dateToString(selectedDate)}
+            </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="icon">
+                  <CalendarIcon className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <PopoverClose>
+                  <Calendar
+                    mode="single"
+                    selected={new Date(selectedDate)}
+                    onSelect={(day) => setNewDate(day)}
+                    initialFocus
+                  />
+                </PopoverClose>
+              </PopoverContent>
+            </Popover>
+          </div>
+          <Button size="icon" onClick={() => setDateToNextDay()}>
+            <ArrowRight className="h-4 w-4" />
+          </Button>
         </div>
-        <Button size="icon" onClick={() => setDateToNextDay()}><ArrowRight className="h-4 w-4"/></Button>
+        <TodoItemList
+          todos={currentTodos}
+          onDelete={onDelete}
+          onToggleStatus={onToggleStatus}
+        />
       </div>
-      <TodoItemList
-        todos={currentTodos}
-        onDelete={onDelete}
-        onToggleStatus={onToggleStatus}
-      />
+      <div className="self-center">
+        <Link href="/todos/dailystats">
+          <Button size="lg" className="w-60">
+            <span className="pr-2">Daily Statistics</span>
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

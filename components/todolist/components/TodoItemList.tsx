@@ -1,5 +1,6 @@
 "use client";
 
+import { Progress } from "@/components/ui/progress";
 import { TodoItem } from "./TodoItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Todo } from "@/types/customTypes";
@@ -33,22 +34,40 @@ function TodoItemList(props: TodoItemListProps): JSX.Element {
     }
     return 0;
   });
+  const closedItems = sortedTodos?.filter(
+    (item) => item.status === "closed"
+  ).length;
+  const openItems = sortedTodos?.filter(
+    (item) => item.status === "open"
+  ).length;
+  const percentage =
+    closedItems && sortedTodos
+      ? Math.round((closedItems * 100) / sortedTodos?.length)
+      : 0;
 
   return (
-    <ScrollArea className="border-black border-2 w-[40vw] h-[60vh]">
-      <div className="flex flex-col items-center">
-        <div className="flex flex-col gap-4 mt-4">
-          {sortedTodos?.map((todo) => (
-            <TodoItem
-              todo={todo}
-              key={todo.id}
-              onDelete={onDelete}
-              onToggleStatus={onToggleStatus}
-            />
-          ))}
+    <div className="border-black border-2 w-[40vw] h-[60vh] mt-2 flex flex-col">
+      <ScrollArea className="h-[55vh]">
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col gap-4 mt-4">
+            {sortedTodos?.map((todo) => (
+              <TodoItem
+                todo={todo}
+                key={todo.id}
+                onDelete={onDelete}
+                onToggleStatus={onToggleStatus}
+              />
+            ))}
+          </div>
         </div>
+      </ScrollArea>
+      <div className="flex flex-row justify-around items-center ml-4 mr-4">
+        <div className="w-[5vw]">
+          {percentage}% ({closedItems}/{openItems})
+        </div>
+        <Progress value={percentage} className="bg-red-400" />
       </div>
-    </ScrollArea>
+    </div>
   );
 }
 
